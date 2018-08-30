@@ -10,18 +10,41 @@ class App extends Component {
         { description: 'Take out the trash', isCompleted: true },
         { description: 'Wash the dishes', isCompleted: true },
         { description: 'Clean the house', isCompleted: false },
-      ]
+      ],
+      newTodoDescription: ''
     };
+  }
+
+  handleChange(e) {
+    this.setState({ newTodoDescription: e.target.value })
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    if (!this.state.newTodoDescription) { return }
+    const newTodo = { description: this.state.newTodoDescription, iscompleted: false };
+    this.setState({ todos: [...this.state.todos, newTodo], newTodoDescription: '' });
+  }
+
+  toggleComplete(index) {
+    const todos = this.state.todos.slice();
+    const todo = todos[index];
+    todo.isCompleted = todo.isCompleted ? false : true;
+    this.setState({ todos: todos });
   }
 
   render() {
     return (
       <div className="App">
         <ul>
-          { this.state.todos.map( (todo, index) =>
-            <ToDo key={ index } description={ todo.description } isCompleted={ todo.isCompleted } />
+         { this.state.todos.map( (todo, index) =>
+            <ToDo key={ index } description={ todo.description } isCompleted={ todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) } />
           )}
         </ul>
+        <form onSubmit={ (e) => this.handleSubmit(e) }>
+          <input type="text" value={ this.state.newTodoDescription } onChange={ (e) => this.handleChange(e) } />
+          <input type="submit" />
+        </form>
       </div>
     );
   }
