@@ -15,8 +15,12 @@ class App extends Component {
     };
   }
 
+  deleteTodo(index) {
+    this.setState({ todo: this.state.todo.filter(e => e !== index) });
+  }
+
   handleChange(e) {
-    this.setState({ newTodoDescription: e.target.value })
+    this.setState({ newTodoDescription: e.target.value });
   }
 
   handleSubmit(e) {
